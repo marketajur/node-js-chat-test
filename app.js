@@ -13,11 +13,13 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    socket.broadcast.emit('hi to all connected, broadcast');
-    console.log('a user connected');
+    socket.broadcast.emit('chat message', [socket.id, 'another user joined the chat']);
+    
+    console.log('a user connected with UID "' + socket.id + '"');
+    
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
-        console.log('emitted message: ' + msg);
+        console.log('emitted message: ' + msg + ' from UID ' + socket.id);
     });
 
     
